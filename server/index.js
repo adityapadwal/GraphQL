@@ -5,6 +5,9 @@ const {ApolloServer} = require('@apollo/server');
 const {expressMiddleware} = require('@apollo/server/express4'); // middleware that integrates Apollo Server with an Express app
 const { default: axios } = require('axios');
 
+const {USERS} = require('./user.js');
+const {TODOS} = require('./todo.js');
+
 async function startServer() {
     // Creating the express server
     const app = express();
@@ -38,18 +41,29 @@ async function startServer() {
         `,
         resolvers: {
             Todo: {
-                user: async(todo) => (await axios.get(`https://jsonplaceholder.typicode.com/users/${todo.id}`)).data,
+                user: (todo) => USERS.find((e) => e.id === todo.id),
             },
 
             Query: {
-                getTodos: async () => 
-                    (await axios.get(`https://jsonplaceholder.typicode.com/todos`)).data,
-                getAllUsers: async () => 
-                    (await axios.get(`https://jsonplaceholder.typicode.com/users`)).data,
-                getUser: async (parent, {id}) => 
-                    (await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)).data,
+                getTodos: () => TODOS, 
+                getAllUsers: () => USERS,
+                getUser: (parent, {id}) => USERS.find((e) => e.id === id),
             }
         },
+        // resolvers: {
+        //     Todo: {
+        //         user: async(todo) => (await axios.get(`https://jsonplaceholder.typicode.com/users/${todo.id}`)).data,
+        //     },
+
+        //     Query: {
+        //         getTodos: async () => 
+        //             (await axios.get(`https://jsonplaceholder.typicode.com/todos`)).data,
+        //         getAllUsers: async () => 
+        //             (await axios.get(`https://jsonplaceholder.typicode.com/users`)).data,
+        //         getUser: async (parent, {id}) => 
+        //             (await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)).data,
+        //     }
+        // },
     });
 
     // app.use('body-parser'); Don't use this (deprecated)!!! 

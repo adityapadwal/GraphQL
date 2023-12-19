@@ -1,0 +1,8 @@
+{
+  "name": "GraphQL",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/adityapadwal/GraphQL.git",
+  "author": "Aditya-Padwal <aditya.padwal3102@gmail.com>",
+  "license": "MIT"
+}
