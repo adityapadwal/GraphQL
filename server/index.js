@@ -6,7 +6,7 @@ const {expressMiddleware} = require('@apollo/server/express4'); // middleware th
 const { default: axios } = require('axios');
 
 async function startServer() {
-    // Starting the express server
+    // Creating the express server
     const app = express();
 
     // Creating the GraphQL server
@@ -23,6 +23,7 @@ async function startServer() {
             }
 
             type Todo {
+                userId:  ID!
                 id: ID!
                 title: String!
                 completed: Boolean
@@ -63,7 +64,7 @@ async function startServer() {
     // Starting the GraphQL server
     await server.start();
 
-    // If an HTTP server comes to "/graphql" then the GrapQL server will handle it
+    // If an HTTP request comes to "/graphql" then the GrapQL server will handle it
     app.use("/graphql", expressMiddleware(server));
 
     app.listen((8000), () => {
